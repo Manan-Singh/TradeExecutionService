@@ -1,20 +1,25 @@
 package app;
 
+import app.Messenger.Sender;
+import app.Messenger.TradeOrder;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.jms.annotation.EnableJms;
+
 
 @SpringBootApplication
-@RestController
+@EnableJms
 public class AppConfig {
-
     public static void main(String[] args) {
-        SpringApplication.run(AppConfig.class);
+        ConfigurableApplicationContext context = SpringApplication.run(app.AppConfig.class, args);
+        Sender sender = new Sender(context);
+        TradeOrder order = new TradeOrder("true", 0,88.0,2000,"HON" );
+        sender.sendMessage(order);
+
     }
 
-    @RequestMapping("/home")
-    public String home() {
-        return "Welcome to the Trading Execution Service";
-    }
 }
+
+
+
